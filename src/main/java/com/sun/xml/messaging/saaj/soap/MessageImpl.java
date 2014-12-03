@@ -33,6 +33,8 @@ import com.sun.xml.messaging.saaj.soap.impl.EnvelopeImpl;
 import com.sun.xml.messaging.saaj.util.*;
 import org.jvnet.mimepull.MIMEPart;
 
+import static java.lang.String.format;
+
 /**
  * The message implementation for SOAP messages with
  * attachments. Messages for specific profiles will likely extend this
@@ -106,6 +108,8 @@ public abstract class MessageImpl
 
     private static Integer soapBodyPartSizeLimit;
 
+    public static final String SAAJ_MIME_SOAP_BODY_PART_SIZE_LIMIT = "saaj.mime.soapBodyPartSizeLimit";
+
     static {
             String s = SAAJUtil.getSystemProperty("saaj.mime.optimization");
             if ((s != null) && s.equals("false")) {
@@ -117,7 +121,7 @@ public abstract class MessageImpl
             }
             useMimePull = SAAJUtil.getSystemBoolean("saaj.use.mimepull");
 
-            soapBodyPartSizeLimit = SAAJUtil.getSystemInteger("saaj.mime.soapBodyPartSizeLimit");
+            soapBodyPartSizeLimit = SAAJUtil.getSystemInteger(SAAJ_MIME_SOAP_BODY_PART_SIZE_LIMIT);
       
     }
 
@@ -504,8 +508,7 @@ public abstract class MessageImpl
                             soapMessagePart =
                                     bmMultipart.getNextPart(stream, bndbytes, sin);
                             if (soapBodyPartSizeLimit != null && soapMessagePart.getSize() > soapBodyPartSizeLimit) {
-                                throw new SOAPExceptionImpl(
-                                        String.format("SOAP body part of size %s exceeded size limitation: %s", soapMessagePart.getSize(), soapBodyPartSizeLimit));
+                                throw new SOAPExceptionImpl(format("SOAP body part of size %s exceeded size limitation: %s", soapMessagePart.getSize(), soapBodyPartSizeLimit));
                             }
                             bmMultipart.removeBodyPart(soapMessagePart);
                         } else {
