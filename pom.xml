@@ -22,7 +22,7 @@
 
     <groupId>com.sun.xml.messaging.saaj</groupId>
     <artifactId>saaj-impl</artifactId>
-    <version>1.5.2-SNAPSHOT</version>
+    <version>1.5.1-digipost</version>
     <description>
         Open source Reference Implementation of JSR-67: SOAP with Attachments API for Java (SAAJ MR: 1.4)
     </description>
@@ -85,8 +85,19 @@
     </properties>
 
     <build>
+                <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>3.2.0</version>
+            </extension>
+        </extensions>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
